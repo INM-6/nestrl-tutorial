@@ -13,9 +13,16 @@ You first need to install a variety of tools:
 4. Install OpenAI Gym via pip (<https://pypi.python.org/pypi/gym>)
 5. Install gymz via pip (<https://pypi.python.org/pypi/gymz>)
 
+[IDEA: build everything up from scratch, only introduce one new script at a time]
 
-Example 0: Input via ZeroMQ
----------------------------
+Example -2: Python to Python via ZeroMQ
+---------------------------------------
+
+Example -1: Python to Python via ZeroMQ & MUSIC
+-----------------------------------------------
+
+Example 0: Python to NEST via ZeroMQ & MUSIC
+-------------------------------------------
 
 as first step, we feed custom input from a Python script via ZeroMQ into a neuron in NEST
 
@@ -41,14 +48,18 @@ to run this example, you first start zmq_sender.py and then launch music with mp
 
 make sure to have all paths set correctly (see add_paths.sh)
 
-Example 1: Input from OpenAI Gym
---------------------------------
+Example 1: OpenAI Gym to NEST via ZeroMQ & MUSIC
+------------------------------------------------
 
-now create a simple setup in which we use the toolchain to feed observations from an environment into a simulation with two neurons
-we use the MountainCar environment and two neurons that respond to the agent being in the left half, or the right half of the screen
+now create a simple setup in which we use the toolchain to feed observations from an environment from OpenAI Gym into a simulation with two neurons that mimic place cells
+we use the MountainCar environment and the neurons respond to to the agent being in the left half, and the right half of the screen, respectively
+
+Example 2: OpenAI Gym to NEST and back via ZeroMQ & MUSIC
+---------------------------------------------------------
 
 TODO (what I realized is missing during writing this)
 =====================================================
 - explain every entry in default config
 - documentation for all adapters/encoders
 - explain message types
+- MUSIC is not very user friendly in terms of error messages, we should help to improve this
