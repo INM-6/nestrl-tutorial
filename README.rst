@@ -15,14 +15,15 @@ You first need to install a variety of tools:
 
 [IDEA: build everything up from scratch, only introduce one new script at a time]
 
+
 Example 0: Python to Python via ZeroMQ
 ---------------------------------------
 
 we start with a simple setup in which we send data from one python script to another via zmq sockets
 if you are already familiar with zmq, you can skip this step
 
-we want to communicate asynchronously and use a publisher/subscriber mode, also used throughout gymz
-these messages have a particular from, which also gymz uses to communicate observations from environments
+we want to communicate asynchronously and use a publisher/subscriber mode, also used throughout gymz 
+these messages have a particular from, which also gymz uses to communicate observations from environments (see example0/zmq_sender.py)
 they consist of a list of dictionaries in json format, one dictionary for each observation channel, with each dictionary containing an observed value, the limits of this value and a timestamp
 the limits are necessary to normalize the data in the subsequent MUSIC adapters and the timestamp is used to detect desynchronization between different parts of the toolchain
 although we would not need this specific message type in this example, it is useful to use the same format also used later
@@ -35,11 +36,38 @@ to run this example, start the sender and the subscriber, and watch the subscrib
 
 .. code:: bash
 
-          $ ./zmq_sender.py
-          $ mpirun -np 3 music music_setup.music
+          $ ./zmq_sender.py&
+          $ ./zmq_receiver.py
+
 
 Example 1: Python to Python via ZeroMQ & MUSIC
 -----------------------------------------------
+
+we now include MUSIC in the loop; although this setup is quite artificial  it illustrates some feature of the zmq adapters
+
+we will use the zmq scripts from the previous example, but note that now, we need to set a different port in the receiver, otherwise it just directly receives data from sender.py
+for this we will use a zmq_cont_adapter which translates data from zero mq, in the message format defined above, to continuous values that can be understood by MUSIC
+we will then use a threshold adapter to remove all values smaller than zero and will sends its output to a cont_zmq_adapter that transforms continuous data from MUSIC back to our message format
+
+we need to define our setup in a MUSIC config file [link to MUSIC doc?] (see example1/config.music)
+first of all we need an adapter that connects to a zmq publisher, receives messages and converts them into a continious variable, the zmq_cont_adapter (read ZeroMQ->Continuous value adapter)
+we need to define the MUSIC time step, for which we choose the same value as in the sender
+we also set the message type to expect to GymObservation, which has the same format as we defined in sender
+finally, we tell the adapter to connect to the sender running on localhost on the corresponding port
+as a second adapter, we use the threshold adapter, in which we disable the heaviside, i.e., step function behaviour and turn it into a threshold-linear adapter by setting heaviside to false and the threshold to zero
+the converting the data from the threshold adapter back to zmq messages happens via a cont_zmq_adapter ("Continous value->ZeroMQ adapter")
+we need to additionally provide the min and max of the values, that we expect and define on which port to publish the messages
+at last, we hook up the various binaries, and define which MUSIC ports to connect
+
+you can then run the example by starting the sender and receiver, and then running MUSIC with an appropiate number of processes
+you should see a similar output as in the first example, but now all negative values are set to zero due to the threshold-linear adapter
+
+.. code:: bash
+
+          $ ./zmq_sender.py&
+          $ ./zmq_receiver.py&
+          $ mpirun -np 3 music config.music
+
 
 Example 2: Python to NEST via ZeroMQ & MUSIC
 -------------------------------------------
