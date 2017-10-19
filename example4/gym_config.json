@@ -1,0 +1,18 @@
+{
+    "All":
+    {
+        "write_report": false
+    },
+    "Env":
+    {
+        "env": "MountainCar-v0",
+        "min_reward": -1.0,
+        "max_reward": 1.0,
+        "inter_trial_observation": [0.0, 0.0]
+    },
+    "EnvRunner":
+    {
+        "update_interval": 0.02,
+        "inter_trial_duration": 0
+    }
+}

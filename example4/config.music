@@ -1,0 +1,48 @@
+stoptime=10.
+rtf=1.
+[zmq]
+  binary=zmq_cont_adapter
+  args=
+  np=1
+  music_timestep=0.001
+  message_type=GymObservation
+  zmq_topic=
+  zmq_addr=tcp://localhost:5556
+[encoder]
+  binary=rate_encoder
+  args=
+  np=1
+  music_timestep=0.001
+  rate_min=0
+  rate_max=50
+[nest]
+  binary=./nest_sim.py
+  args=
+  np=1
+[decoder]
+  binary=linear_decoder
+  args=
+  np=1
+  music_timestep=0.001
+  tau=1
+[threshold]
+  binary=threshold_adapter
+  args=
+  np=1
+  music_timestep=0.001
+  threshold=10.
+[zmqout]
+  binary=cont_zmq_adapter
+  args=
+  np=1
+  music_timestep=0.001
+  message_type=GymObservation
+  min=0
+  max=1
+  zmq_topic=
+  zmq_addr=tcp://*:5555
+zmq.out->encoder.in[1]
+encoder.out->nest.in[1]
+nest.out->decoder.in[1]
+decoder.out->threshold.in[1]
+threshold.out->zmqout.in[1]
