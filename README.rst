@@ -15,7 +15,7 @@ You first need to install a variety of tools:
 
 [IDEA: build everything up from scratch, only introduce one new script at a time]
 
-Example -2: Python to Python via ZeroMQ
+Example 0: Python to Python via ZeroMQ
 ---------------------------------------
 
 we start with a simple setup in which we send data from one python script to another via zmq sockets
@@ -38,10 +38,10 @@ to run this example, start the sender and the subscriber, and watch the subscrib
           $ ./zmq_sender.py
           $ mpirun -np 3 music music_setup.music
 
-Example -1: Python to Python via ZeroMQ & MUSIC
+Example 1: Python to Python via ZeroMQ & MUSIC
 -----------------------------------------------
 
-Example 0: Python to NEST via ZeroMQ & MUSIC
+Example 2: Python to NEST via ZeroMQ & MUSIC
 -------------------------------------------
 
 as first step, we feed custom input from a Python script via ZeroMQ into a neuron in NEST
@@ -68,13 +68,13 @@ to run this example, you first start zmq_sender.py and then launch music with mp
 
 make sure to have all paths set correctly (see add_paths.sh)
 
-Example 1: OpenAI Gym to NEST via ZeroMQ & MUSIC
+Example 3: OpenAI Gym to NEST via ZeroMQ & MUSIC
 ------------------------------------------------
 
 now create a simple setup in which we use the toolchain to feed observations from an environment from OpenAI Gym into a simulation with two neurons that mimic place cells
 we use the MountainCar environment and the neurons respond to to the agent being in the left half, and the right half of the screen, respectively
 
-Example 2: OpenAI Gym to NEST and back via ZeroMQ & MUSIC
+Example 4: OpenAI Gym to NEST and back via ZeroMQ & MUSIC
 ---------------------------------------------------------
 
 TODO (what I realized is missing during writing this)
