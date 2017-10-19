@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import json
+import numpy as np
 import time
 import zmq
 
@@ -8,26 +8,24 @@ import zmq
 ctx = zmq.Context()
 
 sub = ctx.socket(zmq.SUB)
-sub.connect('tcp://localhost:5556')
+sub.connect('tcp://localhost:5555')
 sub.setsockopt(zmq.SUBSCRIBE, b'')
-sub.RCVTIMEO = 1000  # set timeout to avoid getting stuck when sender is not available
 
-t_max = 10.
-t = 0
-dt = 0.01
+# set timeout to avoid getting stuck when sender is not available
+sub.RCVTIMEO = 1000  # millisecond
+
+t_max = 10.  # seconds
+dt = 0.01  # seconds
 
 print('start receiving')
 
-while t < t_max:
-
+for t in np.arange(0, t_max, dt):
     try:
-        msg = json.loads(sub.recv())
+        msg = sub.recv_json()
     except zmq.error.Again:  # timeout, try again
         continue
 
-    print(msg)
+    print('recv', msg)
     time.sleep(dt)
 
-    t += dt
-
-print('stop sending')
+print('stop receiving')
