@@ -16,8 +16,8 @@ rtf=1.
   rate_min=0
   rate_max=200
 [nest]
-  binary=./nest_setup.py
-  args=3.
+  binary=./nest_sim.py
+  args=
   np=1
 zmq.out->encoder.in[1]
 encoder.out->nest.in[1]
