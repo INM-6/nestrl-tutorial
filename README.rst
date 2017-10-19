@@ -36,6 +36,7 @@ The length of the list depends on the number of independent channels we need.
 A simple message with one channel, limits of [-2, 1] and the value 0.1 would hence look like the following
 
 .. code:: javascript
+
           [{'min': -2, 'max': 1, 'value': 0.1, 'ts': 1508443240.706507}]
 
 To communicate between processes asynchronously, we use a publisher/subscriber model.
