@@ -15,6 +15,7 @@ You first need to install a variety of tools:
 
 [IDEA: build everything up from scratch, only introduce one new script at a time]
 
+before you start, please make sure to have all paths set correctly (see add_paths.sh)
 
 Example 0: Python to Python via ZeroMQ
 ---------------------------------------
@@ -54,7 +55,7 @@ first of all we need an adapter that connects to a zmq publisher, receives messa
 we need to define the MUSIC time step, for which we choose the same value as in the sender
 we also set the message type to expect to GymObservation, which has the same format as we defined in sender
 finally, we tell the adapter to connect to the sender running on localhost on the corresponding port
-as a second adapter, we use the threshold adapter, in which we disable the heaviside, i.e., step function behaviour and turn it into a threshold-linear adapter by setting heaviside to false and the threshold to zero
+as a second adapter, we use the threshold adapter, in which we disable the heaviside, i.e., step function behaviour and turn it into a threshold-linear adapter by setting heaviside to false and threshold to zero
 the converting the data from the threshold adapter back to zmq messages happens via a cont_zmq_adapter ("Continous value->ZeroMQ adapter")
 we need to additionally provide the min and max of the values, that we expect and define on which port to publish the messages
 at last, we hook up the various binaries, and define which MUSIC ports to connect
@@ -92,9 +93,8 @@ to run this example, you first start zmq_sender.py and then launch music with mp
 .. code:: bash
 
           $ ./zmq_sender.py
-          $ mpirun -np 3 music music_setup.music
+          $ mpirun -np 3 music config.music
 
-make sure to have all paths set correctly (see add_paths.sh)
 
 Example 3: OpenAI Gym to NEST via ZeroMQ & MUSIC
 ------------------------------------------------
@@ -102,8 +102,10 @@ Example 3: OpenAI Gym to NEST via ZeroMQ & MUSIC
 now create a simple setup in which we use the toolchain to feed observations from an environment from OpenAI Gym into a simulation with two neurons that mimic place cells
 we use the MountainCar environment and the neurons respond to to the agent being in the left half, and the right half of the screen, respectively
 
+
 Example 4: OpenAI Gym to NEST and back via ZeroMQ & MUSIC
 ---------------------------------------------------------
+
 
 TODO (what I realized is missing during writing this)
 =====================================================
