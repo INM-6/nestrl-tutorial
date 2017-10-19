@@ -8,7 +8,7 @@ import zmq
 ctx = zmq.Context()
 
 sub = ctx.socket(zmq.SUB)
-sub.connect('tcp://localhost:5555')
+sub.connect('tcp://localhost:5556')
 sub.setsockopt(zmq.SUBSCRIBE, b'')
 
 # set timeout to avoid getting stuck when sender is not available

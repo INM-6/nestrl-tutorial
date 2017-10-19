@@ -16,7 +16,7 @@ def GymObservation(low, high, value):
 ctx = zmq.Context()
 
 pub = ctx.socket(zmq.PUB)
-pub.bind('tcp://*:5555')
+pub.bind('tcp://*:5556')
 
 t_max = 10.  # seconds
 dt = 0.01  # seconds
