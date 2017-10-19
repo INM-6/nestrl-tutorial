@@ -18,6 +18,26 @@ You first need to install a variety of tools:
 Example -2: Python to Python via ZeroMQ
 ---------------------------------------
 
+we start with a simple setup in which we send data from one python script to another via zmq sockets
+if you are already familiar with zmq, you can skip this step
+
+we want to communicate asynchronously and use a publisher/subscriber mode, also used throughout gymz
+these messages have a particular from, which also gymz uses to communicate observations from environments
+they consist of a list of dictionaries in json format, one dictionary for each observation channel, with each dictionary containing an observed value, the limits of this value and a timestamp
+the limits are necessary to normalize the data in the subsequent MUSIC adapters and the timestamp is used to detect desynchronization between different parts of the toolchain
+although we would not need this specific message type in this example, it is useful to use the same format also used later
+
+we set up a publisher (zmq.PUB) that continously sends out messages (see <https://pyzmq.readthedocs.io/en/latest/index.html> for all zmq specific details)
+the sender.py script just sends a sine wave for t_max seconds with a time step between two messages of dt
+the receiver registers as a subscriber (zmq.SUBSCRIBE) to the zmq publisher and print the received messages to the screen
+
+to run this example, start the sender and the subscriber, and watch the subscriber print messages to the screen
+
+.. code:: bash
+
+          $ ./zmq_sender.py
+          $ mpirun -np 3 music music_setup.music
+
 Example -1: Python to Python via ZeroMQ & MUSIC
 -----------------------------------------------
 
