@@ -31,8 +31,12 @@ We start by sending data from one Python process to another via ZeroMQ sockets <
 
 We use a specific message format based on JSON to communicate between processes.
 All messages are list of dictionaries, with each dictionary containing an observed value, the limits of this value and a timestamp.
-The length of the list depends on the number of independent channels we need.
 The limits are necessary to normalize the data in subsequent MUSIC adapters and the timestamp is used to detect desynchronization between different parts of the toolchain.
+The length of the list depends on the number of independent channels we need.
+A simple message with one channel, limits of [-2, 1] and the value 0.1 would hence look like the following
+
+.. code:: javascript
+          [{'min': -2, 'max': 1, 'value': 0.1, 'ts': 1508443240.706507}]
 
 To communicate between processes asynchronously, we use a publisher/subscriber model.
 We set up a publisher (``zmq.PUB``) that continously sends out a sine wave for ``t_max`` seconds with a time step between two messages of ``dt`` (see ``sender.py``).
