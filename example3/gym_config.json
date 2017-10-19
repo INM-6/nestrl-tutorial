@@ -1,9 +1,7 @@
 {
     "All":
     {
-        "prefix": "experiment_0",
-        "write_report": true,
-        "overwrite_files": true
+        "write_report": false
     },
     "Env":
     {
