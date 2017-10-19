@@ -1,0 +1,23 @@
+stoptime=3.
+rtf=1.
+[zmq]
+  binary=zmq_cont_adapter
+  args=
+  np=1
+  music_timestep=0.001
+  message_type=GymObservation
+  zmq_topic=
+  zmq_addr=tcp://localhost:5556
+[encoder]
+  binary=rate_encoder
+  args=
+  np=1
+  music_timestep=0.001
+  rate_min=0
+  rate_max=200
+[nest]
+  binary=./nest_setup.py
+  args=3.
+  np=1
+zmq.out->encoder.in[1]
+encoder.out->nest.in[1]
