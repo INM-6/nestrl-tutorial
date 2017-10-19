@@ -8,6 +8,8 @@ from mpi4py import MPI
 comm = MPI.COMM_WORLD
 
 simtime = 10000.
+tau_m = 1.
+tau_syn = 50.
 
 # setup and simulate
 
@@ -18,11 +20,10 @@ nest.SetKernelStatus({'overwrite_files': True, 'resolution': 1.})
 music_in_proxy = nest.Create('music_event_in_proxy', 1, {'port_name': 'in'})
 music_out_proxy = nest.Create('music_event_out_proxy', 1, {'port_name': 'out'})
 
-tau_syn = 50.
-neuron_left = nest.Create('iaf_psc_exp', 1, {'E_L': -59.5, 'V_th': -60., 'tau_m': 1., 'tau_syn_ex': tau_syn, 'tau_syn_in': tau_syn})
-neuron_right = nest.Create('iaf_psc_exp', 1, {'E_L': -60.5, 'V_th': -60., 'tau_m': 1., 'tau_syn_ex': tau_syn, 'tau_syn_in': tau_syn})
+neuron_left = nest.Create('iaf_psc_exp', 1, {'E_L': -59.5, 'V_th': -60., 'tau_m': tau_m, 'tau_syn_ex': tau_syn, 'tau_syn_in': tau_syn})
+neuron_right = nest.Create('iaf_psc_exp', 1, {'E_L': -60.5, 'V_th': -60., 'tau_m': tau_m, 'tau_syn_ex': tau_syn, 'tau_syn_in': tau_syn})
 
-neuron_command = nest.Create('iaf_psc_exp', 1, {'E_L': -60., 'V_th': -60., 'tau_m': 1., 'tau_syn_ex': tau_syn, 'tau_syn_in': tau_syn})
+neuron_command = nest.Create('iaf_psc_exp', 1, {'E_L': -60., 'V_th': -60., 'tau_m': tau_m, 'tau_syn_ex': tau_syn, 'tau_syn_in': tau_syn})
 
 sd = nest.Create('spike_detector')
 
@@ -56,7 +57,7 @@ nest.Simulate(simtime)
 
 # plot results
 
-print('events', nest.GetStatus(sd_ev, 'n_events')[0] / simtime * 1e3)
+print('event rate', nest.GetStatus(sd_ev, 'n_events')[0] / simtime * 1e3)
 
 spikes = nest.GetStatus(sd, 'events')[0]
 
