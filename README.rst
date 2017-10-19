@@ -14,30 +14,34 @@ You first need to install a variety of tools:
 5. Install gymz via pip (<https://pypi.python.org/pypi/gymz>)
 
 [IDEA: build everything up from scratch, only introduce one new script at a time]
+[postpone installation of the required components as far as possible to minimize frustration and create a TLDR for the impatient]
+[lighten the style, this is currently a huge wall of text]
 
-before you start, please make sure to have all paths set correctly (see add_paths.sh)
+[before you start, please make sure to have all paths set correctly (see add_paths.sh)]
 
 Example 0: Python to Python via ZeroMQ
----------------------------------------
+--------------------------------------
 
-we start with a simple setup in which we send data from one python script to another via zmq sockets
-if you are already familiar with zmq, you can skip this step
+Preparations:
+- install PyZMQ via pip <https://pypi.python.org/pypi/pyzmq>
+- clone this repository and navigate to example0/
 
-we want to communicate asynchronously and use a publisher/subscriber mode, also used throughout gymz 
-these messages have a particular from, which also gymz uses to communicate observations from environments (see example0/zmq_sender.py)
-they consist of a list of dictionaries in json format, one dictionary for each observation channel, with each dictionary containing an observed value, the limits of this value and a timestamp
-the limits are necessary to normalize the data in the subsequent MUSIC adapters and the timestamp is used to detect desynchronization between different parts of the toolchain
-although we would not need this specific message type in this example, it is useful to use the same format also used later
+We start by sending data from one Python process to another via ZeroMQ sockets <http://zeromq.org/> , see <https://pyzmq.readthedocs.io/en/latest/index.html> for the PyZMQ documentation.
 
-we set up a publisher (zmq.PUB) that continously sends out messages (see <https://pyzmq.readthedocs.io/en/latest/index.html> for all zmq specific details)
-the sender.py script just sends a sine wave for t_max seconds with a time step between two messages of dt
-the receiver registers as a subscriber (zmq.SUBSCRIBE) to the zmq publisher and print the received messages to the screen
+We use a specific message format based on JSON to communicate between processes.
+All messages are list of dictionaries, with each dictionary containing an observed value, the limits of this value and a timestamp.
+The length of the list depends on the number of independent channels we need.
+The limits are necessary to normalize the data in subsequent MUSIC adapters and the timestamp is used to detect desynchronization between different parts of the toolchain.
 
-to run this example, start the sender and the subscriber, and watch the subscriber print messages to the screen
+To communicate between processes asynchronously, we use a publisher/subscriber model.
+We set up a publisher (`zmq.PUB`) that continously sends out a sine wave for `t_max` seconds with a time step between two messages of `dt` (see `sender.py`).
+The receiver registers as a subscriber (`zmq.SUBSCRIBE`) to the publisher (see `zmq_receiver.py`).
+
+You can run this example by starting the sender in one terminal and the receiver in another. Both scripts should print messages to the screen continuously.
 
 .. code:: bash
 
-          $ ./zmq_sender.py&
+          $ ./zmq_sender.py
           $ ./zmq_receiver.py
 
 
