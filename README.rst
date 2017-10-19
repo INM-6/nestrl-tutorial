@@ -23,6 +23,7 @@ Example 0: Python to Python via ZeroMQ
 --------------------------------------
 
 Preparations:
+
 - install PyZMQ via pip <https://pypi.python.org/pypi/pyzmq>
 - clone this repository and navigate to example0/
 
@@ -34,7 +35,7 @@ The length of the list depends on the number of independent channels we need.
 The limits are necessary to normalize the data in subsequent MUSIC adapters and the timestamp is used to detect desynchronization between different parts of the toolchain.
 
 To communicate between processes asynchronously, we use a publisher/subscriber model.
-We set up a publisher (`zmq.PUB`) that continously sends out a sine wave for `t_max` seconds with a time step between two messages of `dt` (see `sender.py`).
+We set up a publisher (``zmq.PUB``) that continously sends out a sine wave for `t_max` seconds with a time step between two messages of `dt` (see `sender.py`).
 The receiver registers as a subscriber (`zmq.SUBSCRIBE`) to the publisher (see `zmq_receiver.py`).
 
 You can run this example by starting the sender in one terminal and the receiver in another. Both scripts should print messages to the screen continuously.
