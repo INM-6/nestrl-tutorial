@@ -12,6 +12,11 @@ Example 0: Python to Python via ZeroMQ
 Preparations:
 
 - Install PyZMQ via pip <https://pypi.python.org/pypi/pyzmq>
+
+.. code:: bash
+
+          $ pip install --user pyzmq
+
 - Clone this repository and navigate to example0/
 
 We start by sending data from one Python process to another via ZeroMQ sockets <http://zeromq.org/>, see <https://pyzmq.readthedocs.io/en/latest/index.html> for the PyZMQ documentation.
@@ -20,17 +25,17 @@ We use a specific message format based on JSON to communicate between processes.
 All messages are list of dictionaries, with each dictionary containing an observed value, the limits of this value and a timestamp.
 The limits are necessary to normalize the data in subsequent MUSIC adapters and the timestamp is used to detect desynchronization between different parts of the toolchain.
 The length of the list depends on the number of independent channels we need.
-A simple message with one channel, would hence look similar to the following:
+A simple message with one channel looks similar to the following:
 
 .. code:: javascript
 
           [{'min': -2, 'max': 1, 'value': 0.1, 'ts': 1508443240.706507}]
 
-To communicate between processes asynchronously, we use a publisher/subscriber model.
-In this example, we set up a publisher (``zmq.PUB``) that continuously sends out a sine wave for ``t_max`` seconds with a time step between two messages of ``dt`` (see ``sender.py``).
-The receiver registers as a subscriber (``zmq.SUBSCRIBE``) to the publisher (see ``zmq_receiver.py``).
+To communicate between processes asynchronously, we use a publisher/subscriber model (<https://rfc.zeromq.org/spec:29/PUBSUB/>).
+In this example (see ``zmq_sender.py``, ``zmq_receiver.py``), we set up a publisher (``zmq.PUB``) that continuously sends out a sine wave for ``t_max`` seconds with a time step between two messages of ``dt``.
+The receiver registers as a subscriber (``zmq.SUBSCRIBE``) to the publisher.
 
-You can run this example by starting the sender in one terminal and the receiver in another. Both scripts should print messages to the screen continuously.
+You can run this example by executing the sender in one terminal and simultaneously the receiver in another. Both scripts should print messages to the screen continuously.
 
 .. code:: bash
 
@@ -43,7 +48,7 @@ Example 1: Python to Python via ZeroMQ & MUSIC
 
 Preparations:
 
-- Download and install MUSIC from <https://github.com/incf-music>
+- Download and install MUSIC from <https://github.com/INCF/MUSIC>
 - Download and install MUSIC adapters from <https://github.com/incf-music/music-adapters>
 - Set your paths properly
 
@@ -169,7 +174,17 @@ TLDR
 3. Download and install NEST from <https://github.com/nest/nest-simulator>
    Do not forget to set `-Dwith-music=ON`
 4. Install OpenAI Gym via pip (<https://pypi.python.org/pypi/gym>)
+
+.. code:: bash
+
+          $ pip install --user pyzmq
+
 5. Install gymz via pip (<https://pypi.python.org/pypi/gymz>)
+
+.. code:: bash
+
+          $ pip install --user gymz
+
 6. Make sure to have all paths set correctly
 
 .. code:: bash
