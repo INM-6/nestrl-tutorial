@@ -19,6 +19,11 @@ Preparations:
 
 - Clone this repository and navigate to example0/
 
+.. code:: bash
+
+          $ git clone git@github.com:jakobj/nestrl-tutorial.git && cd nestrl-tutorial/example0/
+
+
 We start by sending data from one Python process to another via ZeroMQ sockets <http://zeromq.org/>, see <https://pyzmq.readthedocs.io/en/latest/index.html> for the PyZMQ documentation.
 
 We use a specific message format based on JSON to communicate between processes.
