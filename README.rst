@@ -67,6 +67,7 @@ Preparations:
           export PATH=<MUSIC-install>/bin:$PATH
           export LD_LIBRARY_PATH=<MUSIC-install>/lib:$LD_LIBRARY_PATH
           export PATH=<music-adapters-install>/bin:$PATH
+          export LD_LIBRARY_PATH=<music-adapters-install>/lib:$LD_LIBRARY_PATH
 
 - Nagivate to example1/
 
