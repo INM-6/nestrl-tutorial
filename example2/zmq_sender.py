@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-import json
 import math
+import numpy as np
 import time
 import zmq
 
@@ -19,16 +19,14 @@ pub = ctx.socket(zmq.PUB)
 pub.bind('tcp://*:5556')
 
 t_max = 10.
-t = 0
 dt = 0.01
 
 print('start sending')
 
-while t < t_max:
-    msg = json.dumps(GymObservation(-1., 1., math.sin(2 * math.pi * t)))
-    pub.send(msg.encode())
+for t in np.arange(0, t_max, dt):
+    msg = GymObservation(-1., 1., math.sin(2 * math.pi * t))
+    print('send', msg)
+    pub.send_json(msg)
     time.sleep(dt)
-
-    t += dt
 
 print('stop sending')
