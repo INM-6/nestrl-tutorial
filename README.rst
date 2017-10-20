@@ -70,6 +70,36 @@ To convert messages from the ZeroMQ domain to MUSIC-compatible data, we use a ``
 This adapter can read messages in the format defined above, and converts them to to continuous values communicated via MUSIC.
 This data is then send to a ``threshold_adapter`` which can be configured to replace all negative values with zero.
 To transform this continuous data from MUSIC back to our message format, we use a ``cont_zmq_adapter``.
+The full config then has the following content:
+
+.. code:: ini
+
+          stoptime=5.
+          rtf=1.
+          [zmq_cont]
+            binary=zmq_cont_adapter
+            np=1
+            music_timestep=0.01
+            message_type=GymObservation
+            zmq_topic=
+            zmq_addr=tcp://localhost:5556
+          [threshold]
+            binary=threshold_adapter
+            np=1
+            music_timestep=0.01
+            heaviside=0
+            threshold=0
+          [cont_zmq]
+            binary=cont_zmq_adapter
+            np=1
+            music_timestep=0.01
+            message_type=GymObservation
+            min=-1.
+            max=1.
+            zmq_topic=
+            zmq_addr=tcp://*:5557
+          zmq_cont.out->threshold.in[1]
+          threshold.out->cont_zmq.in[1]
 
 Note that since the ``cont_zmq_adapter`` sends data via port 5557, we need to specify this port also in ``zmq_receiver.py``.
 If this would still be set to 5556, it would directly receive data from ```zmq_sender.py``.
