@@ -24,8 +24,8 @@ Example 0: Python to Python via ZeroMQ
 
 Preparations:
 
-- install PyZMQ via pip <https://pypi.python.org/pypi/pyzmq>
-- clone this repository and navigate to example0/
+- Install PyZMQ via pip <https://pypi.python.org/pypi/pyzmq>
+- Clone this repository and navigate to example0/
 
 We start by sending data from one Python process to another via ZeroMQ sockets <http://zeromq.org/>, see <https://pyzmq.readthedocs.io/en/latest/index.html> for the PyZMQ documentation.
 
@@ -53,6 +53,12 @@ You can run this example by starting the sender in one terminal and the receiver
 
 Example 1: Python to Python via ZeroMQ & MUSIC
 -----------------------------------------------
+
+Preparations:
+
+- Download and install MUSIC from <https://github.com/incf-music>
+- Download and install MUSIC adapters from <https://github.com/incf-music/music-adapters>
+- Nagivate to example1/
 
 We now include a MUSIC adapter in the loop.
 We will use the Python scripts from the previous example to send and receive data, but rectify the sine wave using a threshold adapter.
