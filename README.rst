@@ -1,25 +1,10 @@
 Tutorial: Interfacing NEST and OpenAI Gym
 =========================================
 
-Preparations
-------------
-
-You first need to install a variety of tools:
-
-1. Download and install MUSIC from <https://github.com/incf-music>
-2. Download and install MUSIC adapters from <https://github.com/incf-music/music-adapters>
-3. Download and install NEST from <https://github.com/nest/nest-simulator>
-   Do not forget to set `-Dwith-music=ON`
-4. Install OpenAI Gym via pip (<https://pypi.python.org/pypi/gym>)
-5. Install gymz via pip (<https://pypi.python.org/pypi/gymz>)
-
-[IDEA: build everything up from scratch, only introduce one new script at a time]
-
-[postpone installation of the required components as far as possible to minimize frustration and create a TLDR for the impatient]
-
-[lighten the style, this is currently a huge wall of text]
-
-[before you start, please make sure to have all paths set correctly (see add_paths.sh)]
+The following are step-by-step instructions to interfacing a neural network simulation in NEST with a reinforcement-learning environment from the OpenAI Gym.
+We start from scratch, with simple Python scripts that communicate data via ZeroMQ and end up with a toy network model that is able to solve the MountainCar environment (without learning and only if the initial conditions are suitable).
+This tutorial does not aim at constructing a sophisticated RL network model but focuses on the technical aspects, preparing the reader for creating their own models.
+In case you are impatient and would directly see the whole toolchain in action, you can jump to TLDR_.
 
 Example 0: Python to Python via ZeroMQ
 --------------------------------------
@@ -165,16 +150,43 @@ After the simulations has finished you should see a plot of the spikes and the f
 Example 3: OpenAI Gym to NEST via ZeroMQ & MUSIC
 ------------------------------------------------
 
-now create a simple setup in which we use the toolchain to feed observations from an environment from OpenAI Gym into a simulation with two neurons that mimic place cells
-we use the MountainCar environment and the neurons respond to to the agent being in the left half, and the right half of the screen, respectively
-
+*in progress*
 
 Example 4: OpenAI Gym to NEST and back via ZeroMQ & MUSIC
 ---------------------------------------------------------
 
+*in progress*
 
-TODO (what I realized is missing during writing this)
-=====================================================
+.. _TLDR:
+
+TLDR
+====
+
+1. Download and install MUSIC from <https://github.com/incf-music>
+2. Download and install MUSIC adapters from <https://github.com/incf-music/music-adapters>
+3. Download and install NEST from <https://github.com/nest/nest-simulator>
+   Do not forget to set `-Dwith-music=ON`
+4. Install OpenAI Gym via pip (<https://pypi.python.org/pypi/gym>)
+5. Install gymz via pip (<https://pypi.python.org/pypi/gymz>)
+6. Make sure to have all paths set correctly
+
+.. code:: bash
+
+          export PATH=$HOME/opt/MUSIC/install/bin:$PATH
+          export LD_LIBRARY_PATH=$HOME/opt/MUSIC/install/lib:$LD_LIBRARY_PATH
+          export PATH=$HOME/opt/music-adapters/install/bin:$PATH
+          export LD_LIBRARY_PATH=$HOME/opt/music-adapters/install/lib:$LD_LIBRARY_PATH
+          export PYTHONPATH=$HOME/opt/nest-simulator/install/lib/python3.5/site-packages:$PYTHONPATH
+
+7. Run example4
+
+.. code:: bash
+
+          $ gymz-controller gym gym_config.json
+          $ mpirun -np 6 music config.music
+
+TODO notes (aka what I realized is missing during writing this)
+===============================================================
 - explain every entry in default config
 - documentation for all adapters/encoders
 - explain message types
