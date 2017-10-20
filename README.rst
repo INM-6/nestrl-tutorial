@@ -17,7 +17,7 @@ Preparations:
 
           $ pip install --user pyzmq
 
-- Clone this repository and navigate to example0/
+- Clone this repository and navigate to ``example0/``
 
 .. code:: bash
 
@@ -64,7 +64,7 @@ Preparations:
           export PATH=<music-adapters-install>/bin:$PATH
           export LD_LIBRARY_PATH=<music-adapters-install>/lib:$LD_LIBRARY_PATH
 
-- Navigate to example1/
+- Navigate to ``example1/``
 
 We now include a MUSIC adapter in the loop.
 We will use the Python scripts from the previous example to send and receive data, but rectify the sine wave using a threshold adapter.
@@ -133,7 +133,7 @@ Preparations:
 
           export PYTHONPATH=<nest-simulator-install>/lib/<python-version>/site-packages:$PYTHONPATH
 
-- Navigate to example2/
+- Navigate to ``example2/``
 
 The previous example has demonstrated how to send data from a Python script via ZeroMQ to MUSIC and back.
 We can now use the MUSIC devices available in NEST, also called MUSIC proxies, to receive data in a running simulation.
