@@ -123,6 +123,8 @@ Preparations:
 
           export PYTHONPATH=<nest-simulator-install>/lib/<python-version>/site-packages:$PYTHONPATH
 
+- Navigate to example2/
+
 Since the previous example has already demonstrated how to send data from a Python script via ZeroMQ to MUSIC and back, the hardest part is already over.
 We can now use the MUSIC devices available in NEST, also called MUSIC proxies, to receive data in a running simulation.
 
