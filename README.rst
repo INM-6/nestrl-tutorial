@@ -14,7 +14,9 @@ You first need to install a variety of tools:
 5. Install gymz via pip (<https://pypi.python.org/pypi/gymz>)
 
 [IDEA: build everything up from scratch, only introduce one new script at a time]
+
 [postpone installation of the required components as far as possible to minimize frustration and create a TLDR for the impatient]
+
 [lighten the style, this is currently a huge wall of text]
 
 [before you start, please make sure to have all paths set correctly (see add_paths.sh)]
@@ -52,12 +54,20 @@ You can run this example by starting the sender in one terminal and the receiver
 
 
 Example 1: Python to Python via ZeroMQ & MUSIC
------------------------------------------------
+----------------------------------------------
 
 Preparations:
 
 - Download and install MUSIC from <https://github.com/incf-music>
 - Download and install MUSIC adapters from <https://github.com/incf-music/music-adapters>
+- Set your paths properly
+
+.. code:: bash
+
+          export PATH=<MUSIC-install>/bin:$PATH
+          export LD_LIBRARY_PATH=<MUSIC-install>/lib:$LD_LIBRARY_PATH
+          export PATH=<music-adapters-install>/bin:$PATH
+
 - Nagivate to example1/
 
 We now include a MUSIC adapter in the loop.
@@ -115,12 +125,17 @@ You should see a similar output as in the first example, but now all negative va
 
 
 Example 2: Python to NEST via ZeroMQ & MUSIC
--------------------------------------------
+--------------------------------------------
 
 Preparations:
 
-- Download and install NEST from <https://github.com/nest/nest-simulator>
+- Download and install NEST from <https://github.com/nest/nest-simulator>.
   Do not forget to set `-Dwith-music=ON` while running cmake.
+- Set your paths properly
+
+.. code:: bash
+
+          export PYTHONPATH=<nest-simulator-install>/lib/<python-version>/site-packages:$PYTHONPATH
 
 Since the previous example has already demonstrated how to send data from a Python script via ZeroMQ to MUSIC and back, the hardest part is already over.
 We can now use the MUSIC devices available in NEST, also called MUSIC proxies, to receive data in a running simulation.
@@ -132,7 +147,8 @@ For example, for the message ``[{'min': -2, 'max': 1, 'value': 0.1, 'ts': 150844
 
 In NEST, we create a MUSIC proxy that receives spikes (``music_event_in_proxy``).
 Here we need to specify the portname also defined in the MUSIC config to receive data ("in").
-In our example, this proxy is connected to a neuron from which we record the spike train, and we use an additional neuron to be able to record the free membrane potential.
+In our example, this proxy projects to a neuron from which we record the spike train, and an additional neuron from which we can record the free membrane potential.
+
 
 Run the example by starting the sender and receiver, and running MUSIC with the corresponding config file and an appropiate number of processes.
 After the simulations has finished you should see a plot of the spikes and the free membrane potential of the neuron receiving input from our Python script.

@@ -7,7 +7,7 @@ import sys
 from mpi4py import MPI
 comm = MPI.COMM_WORLD
 
-simtime = 2000.
+simtime = 1500.
 tau_m = 1.
 tau_syn = 50.
 
@@ -52,7 +52,7 @@ ax.set_xlim([0., simtime])
 ax.set_ylim([-65., -50.])
 
 ax.plot(spikes['times'], [-55.] * len(spikes['times']), 'bo', label='Spikes', markeredgewidth=0, markersize=2)
-ax.plot(vm['times'], vm['V_m'], 'k', label='Membrane potential')
+ax.plot(vm['times'], vm['V_m'], 'k', label='Free membrane potential')
 
 ax.legend(loc='upper right')
 
