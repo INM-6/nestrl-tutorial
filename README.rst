@@ -125,8 +125,8 @@ Example 2: Python to NEST via ZeroMQ & MUSIC
 
 Preparations:
 
-- Download and install NEST from <https://github.com/nest/nest-simulator>.
-  Do not forget to set `-Dwith-music=ON` while running cmake.
+- Download and install NEST from <https://github.com/nest/nest-simulator>;
+  Do not forget to set `-Dwith-music=ON` while running cmake
 - Set your paths properly
 
 .. code:: bash
@@ -263,8 +263,8 @@ TLDR
 
 1. Download and install MUSIC from <https://github.com/incf-music>
 2. Download and install MUSIC adapters from <https://github.com/incf-music/music-adapters>
-3. Download and install NEST from <https://github.com/nest/nest-simulator>
-   Do not forget to set `-Dwith-music=ON`
+3. Download and install NEST from <https://github.com/nest/nest-simulator>;
+   Do not forget to set `-Dwith-music=ON` while running cmake
 4. Install OpenAI Gym via pip (<https://pypi.python.org/pypi/gym>)
 
 .. code:: bash
