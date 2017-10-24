@@ -209,7 +209,7 @@ In the absence of inputs, the first neuron spikes autonomously, while the second
 For the leftmost position, the first neuron is hence active, while for the rightmost position, the second neuron is active.
 Both neurons should have identical rate when the car is in the middle between the leftmost boundary and the goal position.
 
-Run the example by starting gymz and MUSIC with the corresponding config files.
+Run the example by starting gymz and MUSIC with the corresponding config files. Since the car is just wobbeling around at the bottom of the trough, you should observe, that the activities of the left and right neuron alternate.
 
 .. code:: bash
 
