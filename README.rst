@@ -1,7 +1,7 @@
 Tutorial: Interfacing NEST and OpenAI Gym
 =========================================
 
-The following are step-by-step instructions to interfacing a neural network simulation in NEST with a reinforcement-learning environment from the OpenAI Gym.
+The following are step-by-step instructions to interfacing a neural network simulation in NEST with a reinforcement-learning environment from OpenAI Gym.
 We start from scratch, with simple Python scripts that communicate data via ZeroMQ and end up with a toy network model that is able to solve the MountainCar environment (without learning and only if the initial conditions are suitable).
 This tutorial does not aim at constructing a sophisticated RL network model but focuses on the technical aspects, preparing the reader for creating their own models.
 In case you are impatient and would directly see the whole toolchain in action, you can jump to TLDR_.
