@@ -229,7 +229,7 @@ Preparations:
 In this step we close the loop between the environment and the network by interpreting the activity of a neuron in the NEST simulation as a command for the agent.
 Instead of constructing a reinforcement-learning network model, we present a hard-wired solution here.
 
-The `MountainCar-v0` environment expects the command to be an integer in ${0, 1, 2}$, where zero means accelerate left, one corresponds to no action and two mean accelerate right.
+The `MountainCar-v0` environment expects the command to be an integer in {0, 1, 2}, where zero means accelerate left, one corresponds to no action and two mean accelerate right.
 We use an additional neuron to encode the command.
 This neuron has a resting potential equal to its threshold and receives excitatory input from the neuron encoding the left position and inhibitory input from the neuron encoding the right position.
 Consequently, it will be active if the car is on the left side, which should lead to the command "accelerate right" and silent if it is on the right side, encoding "move left".
@@ -287,16 +287,10 @@ TLDR
           export LD_LIBRARY_PATH=$HOME/opt/music-adapters/install/lib:$LD_LIBRARY_PATH
           export PYTHONPATH=$HOME/opt/nest-simulator/install/lib/python3.5/site-packages:$PYTHONPATH
 
-7. Run example4
+7. Clone this repository, navigate to ``example4/`` and run it
 
 .. code:: bash
 
+          $ git clone git@github.com:jakobj/nestrl-tutorial.git && cd nestrl-tutorial/example4/
           $ gymz-controller gym gym_config.json
           $ mpirun -np 6 music config.music
-
-TODO notes (aka what I realized is missing during writing this)
-===============================================================
-- explain every entry in default config
-- documentation for all adapters/encoders
-- explain message types
-- MUSIC is not very user friendly in terms of error messages, we should help to improve this
