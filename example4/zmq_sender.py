@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 
-import json
-import math
 import time
 import zmq
 
