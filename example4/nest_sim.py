@@ -78,7 +78,6 @@ spikes = nest.GetStatus(sd, 'events')[0]
 
 fig = plt.figure()
 ax = fig.add_subplot(211)
-ax.set_xlabel('Time (ms)')
 ax.set_xlim([0., simtime])
 ax.set_ylim([neuron_left[0] - 1, neuron_command[0] + 1])
 ax.set_yticks([neuron_left[0], neuron_right[0], neuron_command[0]])
@@ -87,6 +86,8 @@ ax.set_yticklabels(['Left', 'Right', 'Command'])
 ax.plot(spikes['times'], spikes['senders'], 'ko')
 
 ax2 = fig.add_subplot(212)
+ax2.set_xlabel('Time (ms)')
+ax2.set_ylabel('Membrane potential (mV)')
 
 vm_left = nest.GetStatus(mv_left, 'events')[0]
 vm_right = nest.GetStatus(mv_right, 'events')[0]
