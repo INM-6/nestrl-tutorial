@@ -107,8 +107,8 @@ The full config then has the following content (``example1/config.music``):
           zmq_cont.out->threshold.in[1]
           threshold.out->cont_zmq.in[1]
 
-Note that since the ``cont_zmq_adapter`` sends data via port 5557, we need to specify this port also in ``zmq_receiver.py``.
-If this would still be set to 5556, it would directly receive data from ```zmq_sender.py``.
+Note that since the ``cont_zmq_adapter`` sends data via port ``5557``, we need to specify this port also in ``zmq_receiver.py``.
+If this would still be set to ``5556``, it would directly receive data from ```zmq_sender.py``.
 
 Run the example by starting the sender and receiver, and running MUSIC with the corresponding config file and an appropriate number of processes.
 You should see a similar output as in the first example, but now all negative values are set to zero due to the threshold adapter.
@@ -147,7 +147,6 @@ In NEST, we create a MUSIC proxy that receives spikes (``music_event_in_proxy``)
 Here we need to specify the port name also defined in the MUSIC config to receive data ("in").
 In our example, this proxy projects to a neuron from which we record the spike train, and an additional neuron from which we can record the free membrane potential.
 
-
 Run the example by starting the sender and receiver, and running MUSIC with the corresponding config file and an appropriate number of processes.
 After the simulations has finished you should see a plot of the spikes and the free membrane potential of the neuron receiving input from our Python script.
 
@@ -162,7 +161,63 @@ After the simulations has finished you should see a plot of the spikes and the f
 Example 3: OpenAI Gym to NEST via ZeroMQ & MUSIC
 ------------------------------------------------
 
-*in progress*
+Preparations:
+
+- Install OpenAI Gym via pip (<https://pypi.python.org/pypi/gym>)
+
+.. code:: bash
+
+          $ pip install --user pyzmq
+
+- Install gymz via pip (<https://pypi.python.org/pypi/gymz>)
+
+.. code:: bash
+
+          $ pip install --user gymz
+
+This example introduces OpenAI Gym into the loop.
+We set up a simulation in which neurons in NEST receive input from observations from an environment in OpenAI Gym.
+We use the ``MountainCar-v0`` (<https://gym.openai.com/envs/MountainCar-v0/>) environment and two neurons that encode in their activity whether the car is in the left half, or the right half of the environment.
+
+Instead of relying on the ``zmq_sender.py`` script, we use gymz to convert observations from the environment into messages that are communicated via ZeroMQ.
+This requires a configuration script in JSON format, in our case containing the following:
+
+.. code:: javascript
+
+          {
+              "All":
+              {
+                  "write_report": false
+              },
+              "Env":
+              {
+                  "env": "MountainCar-v0",
+                  "inter_trial_observation": [-0.3, 0.0]
+              },
+          }
+
+You can find the default configuration containing all options here <https://github.com/INM-6/python-gymz/blob/master/gymz/DefaultConfig.json>.
+Here we disable reporting, set the correct environment and choose the position of the vehicle to be exactly in the middle of the leftmost corner of the environment and the goal position.
+
+The observations are communicated via gymz in the same format as introduced above, including limits in addition to values, allowing the encoder to translate the continous value of an OpenAI Gym observation to the rate of a spike train.
+In this particular environment, the observations are two dimensional, with the first dimension encoding the position and the second dimension encoding the velocity of the car.
+Here we ignore the velocity, and only communicate the position to NEST.
+
+In NEST, we create two neurons.
+The ``music_event_in_proxy`` projects with negative weight to the first, and with a positive weight to the second neuron.
+In the absence of inputs, the first neuron spikes autonomously, while the second one is silent.
+For the leftmost position, the first neuron is hence active, while for the rightmost position, the second neuron is active.
+Both neurons should have identical rate when the car is in the middle between the leftmost boundary and the goal position.
+
+Run the example by starting gymz and MUSIC with the corresponding config files.
+
+.. code:: bash
+
+          $ gymz-controller gym gym_config.json
+          $ mpirun -np 3 music config.music
+
+.. image:: example3/nest_output.png
+
 
 Example 4: OpenAI Gym to NEST and back via ZeroMQ & MUSIC
 ---------------------------------------------------------

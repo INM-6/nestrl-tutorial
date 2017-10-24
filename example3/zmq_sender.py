@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 
-import json
-import math
 import time
 import zmq
 
@@ -25,7 +23,7 @@ dt = 0.01
 print('start sending')
 
 while t < t_max:
-    pub.send_json(GymObservation(-1.2, 0.6, -0.29))
+    pub.send_json(GymObservation(-1.2, 0.6, -0.9))
     time.sleep(dt)
 
     t += dt
