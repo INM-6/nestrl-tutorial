@@ -7,9 +7,24 @@ import numpy as np
 from mpi4py import MPI
 comm = MPI.COMM_WORLD
 
+
+def get_current_offset(weight, rate, tau_m, tau_syn, C_m):
+    """
+    Computes the mean input expected from an input with rate `rate`
+    and weight `weight` for a neuron with parameters `tau_m`,
+    `tau_syn` and `C_m` (see Campbell's theorem).
+
+    """
+    return weight / C_m * rate * tau_m * tau_syn * 1e-3
+
+
 simtime = 5000.
 tau_m = 1.
-tau_syn = 50.
+tau_syn = 20.
+C_m = 250.
+
+J = 200.
+max_rate = 50.
 
 # setup and simulate
 
@@ -19,34 +34,28 @@ nest.SetKernelStatus({'overwrite_files': True, 'resolution': 1.})
 
 music_in_proxy = nest.Create('music_event_in_proxy', 1, {'port_name': 'in'})
 
-neuron_left = nest.Create('iaf_psc_exp', 1, {'E_L': -59.5, 'V_th': -60., 'tau_m': tau_m, 'tau_syn_ex': tau_syn, 'tau_syn_in': tau_syn})
-neuron_right = nest.Create('iaf_psc_exp', 1, {'E_L': -60.5, 'V_th': -60., 'tau_m': tau_m, 'tau_syn_ex': tau_syn, 'tau_syn_in': tau_syn})
+neuron_left = nest.Create('iaf_psc_exp', 1, {
+    'E_L': -60.3 + get_current_offset(J, max_rate / 2., tau_m, tau_syn, C_m),
+    'V_th': -60., 'tau_m': tau_m, 'tau_syn_ex': tau_syn, 'tau_syn_in': tau_syn, 'C_m': C_m
+})
+neuron_right = nest.Create('iaf_psc_exp', 1, {
+    'E_L': -60. + get_current_offset(-J, max_rate / 2., tau_m, tau_syn, C_m),
+    'V_th': -60., 'tau_m': tau_m, 'tau_syn_ex': tau_syn, 'tau_syn_in': tau_syn, 'C_m': C_m
+})
 
 sd = nest.Create('spike_detector')
 
-sd_ev = nest.Create('spike_detector')
-
-mv_left = nest.Create('multimeter', 1, {'record_from': ['V_m']})
-mv_right = nest.Create('multimeter', 1, {'record_from': ['V_m']})
-
-nest.Connect(music_in_proxy, neuron_left, syn_spec={'weight': -200.})
-nest.Connect(music_in_proxy, neuron_right, syn_spec={'weight': 200.})
+nest.Connect(music_in_proxy, neuron_left, syn_spec={'weight': -J})
+nest.Connect(music_in_proxy, neuron_right, syn_spec={'weight': J})
 
 nest.Connect(neuron_left, sd)
 nest.Connect(neuron_right, sd)
-
-nest.Connect(mv_left, neuron_left)
-nest.Connect(mv_right, neuron_right)
-
-nest.Connect(music_in_proxy, sd_ev)
 
 comm.Barrier()  # necessary to synchronize with MUSIC
 
 nest.Simulate(simtime)
 
 # plot results
-
-print('event rate', nest.GetStatus(sd_ev, 'n_events')[0] / simtime * 1e3)
 
 spikes = nest.GetStatus(sd, 'events')[0]
 
