@@ -197,7 +197,7 @@ This requires a configuration script in JSON format, in our case containing the 
           }
 
 You can find the default configuration containing all options here <https://github.com/INM-6/python-gymz/blob/master/gymz/DefaultConfig.json>.
-Here we disable reporting, set the correct environment and choose the position of the vehicle to be exactly in the middle of the leftmost corner of the environment and the goal position.
+Here we disable reporting, set the correct environment and choose the position of the vehicle to be exactly in the middle between the leftmost corner of the environment and the goal position.
 
 The observations are communicated via gymz in the same format as introduced above, including limits in addition to values, allowing the encoder to translate the continous value of an OpenAI Gym observation to the rate of a spike train.
 In this particular environment, the observations are two dimensional, with the first dimension encoding the position and the second dimension encoding the velocity of the car.
@@ -207,9 +207,9 @@ In NEST, we create two neurons.
 The ``music_event_in_proxy`` projects with negative weight to the first, and with a positive weight to the second neuron.
 In the absence of inputs, the first neuron spikes autonomously, while the second one is silent.
 For the leftmost position, the first neuron is hence active, while for the rightmost position, the second neuron is active.
-Both neurons should have identical rate when the car is in the middle between the leftmost boundary and the goal position.
+Both neurons should have comparable rate when the car is in the middle between the leftmost boundary and the goal position, and we compensate for the offset by adjusting their resting potential according to the expected input.
 
-Run the example by starting gymz and MUSIC with the corresponding config files. Since the car is just wobbeling around at the bottom of the trough, you should observe, that the rates of the left and right neuron increase in turns.
+Run the example by starting gymz and MUSIC with the corresponding config files. Since the car is just wobbeling around at the bottom of the trough, typically a bit on the left, you should observe that the rates of the left and right neuron increase in turns with the left neuron being more active than the right.
 
 .. code:: bash
 
@@ -221,6 +221,38 @@ Run the example by starting gymz and MUSIC with the corresponding config files. 
 
 Example 4: OpenAI Gym to NEST and back via ZeroMQ & MUSIC
 ---------------------------------------------------------
+
+Preparations:
+
+- Get ready to solve your first OpenAI Gym environment with a network model simulated in NEST
+
+In this step we close the loop between the environment and the network by interpreting the activity of a neuron in the NEST simulation as a command for the agent.
+Instead of constructing a reinforcement-learning network model, we present a hard-wired solution here.
+
+The `MountainCar-v0` environment expects the command to be an integer in ${0, 1, 2}$, where zero means accelerate left, one corresponds to no action and two mean accelerate right.
+We use an additional neuron to encode the command.
+This neuron has a resting potential equal to its threshold and receives excitatory input from the neuron encoding the left position and inhibitory input from the neuron encoding the right position.
+Consequently, it will be active if the car is on the left side, which should lead to the command "accelerate right" and silent if it is on the right side, encoding "move left".
+This allows the car to gain momentum by swinging back and forth until it has enough speed to make it up to the goal position.
+This command neuron projects to a MUSIC proxy, ``music_event_out_proxy`` communicating spikes to MUSIC.
+
+In the MUSIC config, we set up a decoder, that translates the spiking data into a continous rate by filtering it with a exponential kernel (``linear_decoder``).
+Afterwards the data is passed to a ``threshold`` adapter, converting the continous value to the command zero or two as required by the environment.
+Note that we interpret rates below one spike/s as off, and everything higher as on.
+The ``cont_zmq_adapter`` finally communicates the value via ZeroMQ to gymz and hence the environment.
+
+Fasten your seatbelt and run the example by starting gymz and MUSIC with the corresponding config files. You should observe the car swining back and forth between the two hills and sometimes reaching the goal positions.
+
+.. code:: bash
+
+          $ gymz-controller gym gym_config.json
+          $ mpirun -np 3 music config.music
+
+.. image:: example4/nest_output.png
+.. image:: example4/mc.png
+
+Outro
+-----
 
 *in progress*
 
