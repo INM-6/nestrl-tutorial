@@ -18,7 +18,7 @@ def get_current_offset(weight, rate, tau_m, tau_syn, C_m):
     return weight / C_m * rate * tau_m * tau_syn * 1e-3
 
 
-simtime = 5000.
+simtime = 10000.
 tau_m = 1.
 tau_syn = 20.
 C_m = 250.
@@ -35,7 +35,7 @@ nest.SetKernelStatus({'overwrite_files': True, 'resolution': 1.})
 music_in_proxy = nest.Create('music_event_in_proxy', 1, {'port_name': 'in'})
 
 neuron_left = nest.Create('iaf_psc_exp', 1, {
-    'E_L': -60.3 + get_current_offset(J, max_rate / 2., tau_m, tau_syn, C_m),
+    'E_L': -60.3 + get_current_offset(J, max_rate / 2., tau_m, tau_syn, C_m),  # add additional 0.3mV to make the left neuron a bit less excitable
     'V_th': -60., 'tau_m': tau_m, 'tau_syn_ex': tau_syn, 'tau_syn_in': tau_syn, 'C_m': C_m
 })
 neuron_right = nest.Create('iaf_psc_exp', 1, {

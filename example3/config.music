@@ -1,6 +1,6 @@
 stoptime=5.
 rtf=1.
-[zmq]
+[zmq_cont]
   binary=zmq_cont_adapter
   args=
   np=1
@@ -19,5 +19,5 @@ rtf=1.
   binary=./nest_sim.py
   args=
   np=1
-zmq.out->encoder.in[1]
+zmq_cont.out->encoder.in[1]
 encoder.out->nest.in[1]
