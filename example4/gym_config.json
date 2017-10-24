@@ -7,5 +7,5 @@
     {
         "env": "MountainCar-v0",
         "inter_trial_observation": [-0.3, 0.0]
-    },
+    }
 }

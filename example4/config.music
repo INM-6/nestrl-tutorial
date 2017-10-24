@@ -1,6 +1,6 @@
 stoptime=10.
 rtf=1.
-[zmq]
+[zmq_cont]
   binary=zmq_cont_adapter
   args=
   np=1
@@ -24,14 +24,14 @@ rtf=1.
   args=
   np=1
   music_timestep=0.001
-  tau=1
+  tau=.1
 [threshold]
   binary=threshold_adapter
   args=
   np=1
   music_timestep=0.001
-  threshold=10.
-[zmqout]
+  threshold=1.
+[cont_zmq]
   binary=cont_zmq_adapter
   args=
   np=1
@@ -41,8 +41,8 @@ rtf=1.
   max=1
   zmq_topic=
   zmq_addr=tcp://*:5555
-zmq.out->encoder.in[1]
+zmq_cont.out->encoder.in[1]
 encoder.out->nest.in[1]
 nest.out->decoder.in[1]
 decoder.out->threshold.in[1]
-threshold.out->zmqout.in[1]
+threshold.out->cont_zmq.in[1]
