@@ -197,7 +197,7 @@ This requires a configuration script in JSON format, in our case containing the 
           }
 
 You can find the default configuration containing all options here <https://github.com/INM-6/python-gymz/blob/master/gymz/DefaultConfig.json>.
-Here we disable reporting, set the correct environment and choose the position of the vehicle to be exactly in the middle between the leftmost corner of the environment and the goal position.
+Here we disable reporting to avoid having to clear output files for multiple runs, set the correct environment and choose the position of the vehicle between two subsequent trials exactly in the middle between the leftmost corner of the environment and the goal position. This is not necessary, but simplifies interpretation of the output.
 
 The observations are communicated via gymz in the same format as introduced above, including limits in addition to values, allowing the encoder to translate the continous value of an OpenAI Gym observation to the rate of a spike train.
 In this particular environment, the observations are two dimensional, with the first dimension encoding the position and the second dimension encoding the velocity of the car.
@@ -246,7 +246,7 @@ Fasten your seatbelt and run the example by starting gymz and MUSIC with the cor
 .. code:: bash
 
           $ gymz-controller gym gym_config.json
-          $ mpirun -np 3 music config.music
+          $ mpirun -np 6 music config.music
 
 .. image:: example4/nest_output.png
 .. image:: example4/mc.png
@@ -281,11 +281,12 @@ TLDR
 
 .. code:: bash
 
-          export PATH=$HOME/opt/MUSIC/install/bin:$PATH
-          export LD_LIBRARY_PATH=$HOME/opt/MUSIC/install/lib:$LD_LIBRARY_PATH
-          export PATH=$HOME/opt/music-adapters/install/bin:$PATH
-          export LD_LIBRARY_PATH=$HOME/opt/music-adapters/install/lib:$LD_LIBRARY_PATH
-          export PYTHONPATH=$HOME/opt/nest-simulator/install/lib/python3.5/site-packages:$PYTHONPATH
+          export PATH=<PREFIX>/MUSIC/install/bin:$PATH
+          export LD_LIBRARY_PATH=<PREFIX>/MUSIC/install/lib:$LD_LIBRARY_PATH
+          export PATH=<PREFIX>/music-adapters/install/bin:$PATH
+          export LD_LIBRARY_PATH=<PREFIX>/music-adapters/install/lib:$LD_LIBRARY_PATH
+          export PATH=<PREFIX>/nest-simulator/install/bin:$PATH
+          export PYTHONPATH=<PREFIX>/nest-simulator/install/lib/python3.5/site-packages:$PYTHONPATH
 
 7. Clone this repository, navigate to ``example4/`` and run it
 
