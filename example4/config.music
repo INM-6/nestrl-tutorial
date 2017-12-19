@@ -31,6 +31,7 @@ rtf=1.
   np=1
   music_timestep=0.001
   threshold=1.
+  scale=2
 [cont_zmq]
   binary=cont_zmq_adapter
   args=
