@@ -19,7 +19,7 @@ pub = ctx.socket(zmq.PUB)
 pub.bind('tcp://*:5556')
 
 t_max = 10.  # seconds
-dt = 0.01  # seconds
+dt = 1.01  # seconds
 
 print('start sending')
 

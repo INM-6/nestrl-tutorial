@@ -12,10 +12,10 @@ sub.connect('tcp://localhost:5557')
 sub.setsockopt(zmq.SUBSCRIBE, b'')
 
 # set timeout to avoid getting stuck when sender is not available
-sub.RCVTIMEO = 1000  # millisecond
+sub.RCVTIMEO = 2000  # millisecond
 
 t_max = 10.  # seconds
-dt = 0.01  # seconds
+dt = 1.01  # seconds
 
 print('start receiving')
 

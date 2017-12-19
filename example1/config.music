@@ -3,20 +3,19 @@ rtf=1.
 [zmq_cont]
   binary=zmq_cont_adapter
   np=1
-  music_timestep=0.01
+  music_timestep=1.01
   message_type=GymObservation
   zmq_topic=
   zmq_addr=tcp://localhost:5556
 [threshold]
   binary=threshold_adapter
   np=1
-  music_timestep=0.01
-  heaviside=0
-  threshold=0
+  music_timestep=1.01
+  is_heaviside=false
 [cont_zmq]
   binary=cont_zmq_adapter
   np=1
-  music_timestep=0.01
+  music_timestep=1.01
   message_type=GymObservation
   min=-1.
   max=1.
