@@ -14,7 +14,7 @@ rtf=1.
   np=1
   music_timestep=0.001
   rate_min=0
-  rate_max=200
+  rate_max=2000
 [nest]
   binary=./nest_sim.py
   args=
