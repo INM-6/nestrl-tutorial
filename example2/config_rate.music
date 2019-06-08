@@ -1,4 +1,4 @@
-stoptime=2.
+stoptime=3.
 rtf=1.
 [zmq_cont]
   binary=zmq_cont_adapter
