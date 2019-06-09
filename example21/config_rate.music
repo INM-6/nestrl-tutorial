@@ -1,0 +1,17 @@
+stoptime=3.
+rtf=1.
+[nest]
+  binary=./nest_sim_rate.py
+  args=
+  np=1
+[cont_zmq]
+  binary=cont_zmq_adapter
+  args=
+  np=1
+  music_timestep=0.01
+  message_type=GymObservation
+  min=0
+  max=100
+  zmq_topic=
+  zmq_addr=tcp://*:5557
+nest.out->cont_zmq.in[1]
