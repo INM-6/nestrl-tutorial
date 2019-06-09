@@ -15,7 +15,7 @@ Preparations:
 
 .. code:: bash
 
-          $ pip install --user pyzmq
+          $ pip install pyzmq
 
 - Clone this repository and navigate to ``example0/``
 
@@ -166,13 +166,13 @@ Preparations:
 
 .. code:: bash
 
-          $ pip install --user pyzmq
+          $ pip install gym
 
 - Install gymz via pip (<https://pypi.python.org/pypi/gymz>)
 
 .. code:: bash
 
-          $ pip install --user gymz
+          $ pip install gymz
 
 This example introduces OpenAI Gym into the loop.
 We set up a simulation in which neurons in NEST receive input from observations from an environment in OpenAI Gym.
@@ -264,19 +264,25 @@ TLDR
 2. Download and install MUSIC adapters from <https://github.com/incf-music/music-adapters>
 3. Download and install NEST from <https://github.com/nest/nest-simulator>;
    Do not forget to set `-Dwith-music=ON` while running cmake
-4. Install OpenAI Gym via pip (<https://pypi.python.org/pypi/gym>)
+4. Install PyZMQ via pip <https://pypi.python.org/pypi/pyzmq>
 
 .. code:: bash
 
-          $ pip install --user pyzmq
+          $ pip install pyzmq
 
-5. Install gymz via pip (<https://pypi.python.org/pypi/gymz>)
+5. Install OpenAI Gym via pip (<https://pypi.python.org/pypi/gym>)
 
 .. code:: bash
 
-          $ pip install --user gymz
+          $ pip install gym
 
-6. Make sure to have all paths set correctly
+6. Install gymz via pip (<https://pypi.python.org/pypi/gymz>)
+
+.. code:: bash
+
+          $ pip install gymz
+
+7. Make sure to have all paths set correctly
 
 .. code:: bash
 
@@ -287,7 +293,7 @@ TLDR
           export PATH=<PREFIX>/nest-simulator/install/bin:$PATH
           export PYTHONPATH=<PREFIX>/nest-simulator/install/lib/python3.5/site-packages:$PYTHONPATH
 
-7. Clone this repository, navigate to ``example4/`` and run it
+8. Clone this repository, navigate to ``example4/`` and run it
 
 .. code:: bash
 
