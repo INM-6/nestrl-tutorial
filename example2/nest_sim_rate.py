@@ -16,7 +16,7 @@ nest.ResetKernel()
 nest.SetKernelStatus({'resolution': 1.0})  # TODO fix resolution issue
 
 music_rate_in = nest.Create('music_rate_in_proxy', 1, {'port_name': 'in'})
-neuron = nest.Create('lin_rate_ipn', 1, {'mu': 1., 'sigma': 0.})
+neuron = nest.Create('lin_rate_ipn', 1, {'sigma': 0.})
 m = nest.Create('multimeter', 1, {'record_from': ['rate']})
 
 nest.Connect(music_rate_in, neuron, syn_spec={'model': 'rate_connection_instantaneous', 'weight': 1.})

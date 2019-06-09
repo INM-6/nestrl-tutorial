@@ -15,7 +15,6 @@ nest.ResetKernel()
 
 nest.SetKernelStatus({'resolution': 1.0})  # TODO fix resolution issue
 
-
 music_rate_in = nest.Create('music_rate_in_proxy', 1, {'port_name': 'in'})
 music_rate_out = nest.Create('music_rate_out_proxy', 1, {'port_name': 'out'})
 neuron = nest.Create('lin_rate_ipn', 1, {'sigma': 0.})
