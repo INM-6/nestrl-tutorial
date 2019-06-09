@@ -18,35 +18,39 @@ def get_current_offset(weight, rate, tau_m, tau_syn, C_m):
     return weight / C_m * rate * tau_m * tau_syn * 1e-3
 
 
-simtime = 10000.
-tau_m = 1.
-tau_syn = 20.
-C_m = 250.
-
-J = 200.
-max_rate = 50.
+simtime = 5000.  # needs to match the stoptime (here in ms) defined in the music config
+max_rate = 50.  # needs to match the max rate defined for the encoder in the music config
+J = 250.
 
 # setup and simulate
 
 nest.ResetKernel()
 
-nest.SetKernelStatus({'overwrite_files': True, 'resolution': 1.})
+tau_m = nest.GetDefaults('iaf_psc_exp', 'tau_m')
+tau_syn_ex = nest.GetDefaults('iaf_psc_exp', 'tau_syn_ex')
+tau_syn_in = nest.GetDefaults('iaf_psc_exp', 'tau_syn_in')
+assert abs(tau_syn_ex - tau_syn_in) < 1e-9
+C_m = nest.GetDefaults('iaf_psc_exp', 'C_m')
 
-music_in_proxy = nest.Create('music_event_in_proxy', 1, {'port_name': 'in'})
+music_event_in = nest.Create('music_event_in_proxy', 1, {'port_name': 'in'})
 
 neuron_left = nest.Create('iaf_psc_exp', 1, {
-    'E_L': -60.3 + get_current_offset(J, max_rate / 2., tau_m, tau_syn, C_m),  # add additional 0.3mV to make the left neuron a bit less excitable
-    'V_th': -60., 'tau_m': tau_m, 'tau_syn_ex': tau_syn, 'tau_syn_in': tau_syn, 'C_m': C_m
+    # since the default action is "accelerate right" the car will spend most
+    # time in the left half; we reduced the resting potential of the
+    # left-coding neurons to make it a bit less excitable and make the
+    # difference between the two neurons more visible
+    'E_L': -60.4 + get_current_offset(J, max_rate / 2., tau_m, tau_syn_ex, C_m),
+    'V_th': -60.
 })
 neuron_right = nest.Create('iaf_psc_exp', 1, {
-    'E_L': -60. + get_current_offset(-J, max_rate / 2., tau_m, tau_syn, C_m),
-    'V_th': -60., 'tau_m': tau_m, 'tau_syn_ex': tau_syn, 'tau_syn_in': tau_syn, 'C_m': C_m
+    'E_L': -60. + get_current_offset(-J, max_rate / 2., tau_m, tau_syn_ex, C_m),
+    'V_th': -60.
 })
 
 sd = nest.Create('spike_detector')
 
-nest.Connect(music_in_proxy, neuron_left, syn_spec={'weight': -J})
-nest.Connect(music_in_proxy, neuron_right, syn_spec={'weight': J})
+nest.Connect(music_event_in, neuron_left, syn_spec={'weight': -J})
+nest.Connect(music_event_in, neuron_right, syn_spec={'weight': J})
 
 nest.Connect(neuron_left, sd)
 nest.Connect(neuron_right, sd)
