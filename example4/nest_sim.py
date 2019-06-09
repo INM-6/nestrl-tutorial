@@ -18,19 +18,20 @@ def get_current_offset(weight, rate, tau_m, tau_syn, C_m):
     return weight / C_m * rate * tau_m * tau_syn * 1e-3
 
 
-simtime = 10000.
+simtime = 10000.  # needs to match the stoptime (here in ms) defined in the music config
+max_rate = 50.  # needs to match the max rate defined for the encoder in the music config
+
 tau_m = 1.
 tau_syn = 20.
-C_m = 250.
-
 J = 200.
-max_rate = 50.
 
 # setup and simulate
 
 nest.ResetKernel()
 
-nest.SetKernelStatus({'overwrite_files': True, 'resolution': 1.})
+nest.SetKernelStatus({'resolution': 1.})
+
+C_m = nest.GetDefaults('iaf_psc_exp', 'C_m')
 
 music_in_proxy = nest.Create('music_event_in_proxy', 1, {'port_name': 'in'})
 music_out_proxy = nest.Create('music_event_out_proxy', 1, {'port_name': 'out'})
@@ -58,7 +59,7 @@ nest.Connect(music_in_proxy, neuron_right, syn_spec={'weight': J})
 nest.Connect(neuron_left, neuron_command, syn_spec={'weight': J})
 nest.Connect(neuron_right, neuron_command, syn_spec={'weight': -J})
 
-nest.Connect(neuron_command, music_out_proxy, syn_spec={'receptor_type': 0})
+nest.Connect(neuron_command, music_out_proxy)
 
 nest.Connect(neuron_left, sd)
 nest.Connect(neuron_right, sd)
@@ -69,7 +70,6 @@ nest.Connect(mv_right, neuron_right)
 nest.Connect(mv_command, neuron_command)
 
 comm.Barrier()  # necessary to synchronize with MUSIC
-
 nest.Simulate(simtime)
 
 # plot results
