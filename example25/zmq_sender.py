@@ -24,7 +24,7 @@ dt = 0.01
 print('start sending')
 
 for t in np.arange(0, t_max, dt):
-    msg = GymObservation(-1., 1., math.sin(2 * math.pi * t))
+    msg = GymObservation(-1., 1., math.sin(2 * math.pi * t) + np.random.normal(scale=0.1))
     print('send', msg)
     pub.send_json(msg)
     time.sleep(dt)
