@@ -250,11 +250,6 @@ Fasten your seatbelt and run the example by starting gymz and MUSIC with the cor
 .. image:: example4/nest_output.png
 .. image:: example4/mc.png
 
-Outro
------
-
-*in progress*
-
 .. _TLDR:
 
 TLDR
